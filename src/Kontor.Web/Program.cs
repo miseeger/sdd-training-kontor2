@@ -1,3 +1,4 @@
+using Kontor.Infrastructure;
 using Kontor.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +7,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+var connectionString = builder.Configuration.GetConnectionString("KontorDb")
+    ?? throw new InvalidOperationException("Connection string 'KontorDb' is missing.");
+builder.Services.AddKontorInfrastructure(connectionString);
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await app.Services.ApplyMigrationsAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

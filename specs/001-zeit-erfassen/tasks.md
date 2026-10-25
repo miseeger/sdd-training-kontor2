@@ -47,15 +47,15 @@ description: "Task list for feature 001 Zeit erfassen"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T010 [P] Entität `Employee` in `src/Kontor.Core/Domain/Employee.cs`: `Id`, `Name` (required, max. 100 Zeichen)
-- [ ] T011 [P] Entität `Project` in `src/Kontor.Core/Domain/Project.cs`: `Id`, `Key` (required, max. 20 Zeichen, eindeutig), `Name` (required, max. 200 Zeichen)
-- [ ] T012 [P] Entität `TimeEntry` in `src/Kontor.Core/Domain/TimeEntry.cs`: `Id`, `EmployeeId` (required), `ProjectId` (required), `Date` (`DateOnly`, required), `Start` und `End` (`TimeOnly`, required, wie eingegeben), `Note` (optional, max. 500 Zeichen), berechnet `ActualDuration` (`End - Start`, nicht gespeichert); keine öffentlichen Setter (Prinzip III). `BilledDuration` kommt erst in T023, nach ihren Tests (Prinzip II)
-- [ ] T013 [P] Schnittstellen `ITimeEntryRepository` (nur `AddAsync` und `GetForEmployeeAndDateAsync`), `IEmployeeRepository`, `IProjectRepository` in `src/Kontor.Core/Abstractions/`
-- [ ] T014 `KontorDbContext` und Entity-Konfigurationen mit den Constraints aus data-model.md, Index auf (`EmployeeId`, `Date`), Seed per `HasData` (Ilka Brandt, Tomás Okoye, Juna Sato, Rik Halvorsen; `NSL-ALB-01` „Antriebswartung Albatros“, `KBA-TG3-04` „Schildgenerator-Kalibrierung Tiefgrund III“, `HFL-PER-02` „Lebenserhaltung prüfen Perihel“) in `src/Kontor.Infrastructure/KontorDbContext.cs` und `src/Kontor.Infrastructure/Configurations/`
-- [ ] T015 Repositories (nur Hinzufügen und Lesen, je Operation ein Kontext über `IDbContextFactory`) in `src/Kontor.Infrastructure/Repositories/` und Registrierung `AddKontorInfrastructure` in `src/Kontor.Infrastructure/DependencyInjection.cs` (research.md, R9)
-- [ ] T016 `src/Kontor.Web/Program.cs`: Infrastruktur registrieren, Connection String `KontorDb` für LocalDB in `src/Kontor.Web/appsettings.Development.json`, ausstehende Migrationen in Development beim Start anwenden
-- [ ] T017 Erste Migration `InitialCreate` mit dem lokalen Tool erzeugen (`dotnet tool restore`, `dotnet ef migrations add InitialCreate`) in `src/Kontor.Infrastructure/Migrations/`
-- [ ] T018 Test-Double `InMemoryTimeEntryRepository` in `tests/Kontor.Core.Tests/Fakes/InMemoryTimeEntryRepository.cs`
+- [X] T010 [P] Entität `Employee` in `src/Kontor.Core/Domain/Employee.cs`: `Id`, `Name` (required, max. 100 Zeichen)
+- [X] T011 [P] Entität `Project` in `src/Kontor.Core/Domain/Project.cs`: `Id`, `Key` (required, max. 20 Zeichen, eindeutig), `Name` (required, max. 200 Zeichen)
+- [X] T012 [P] Entität `TimeEntry` in `src/Kontor.Core/Domain/TimeEntry.cs`: `Id`, `EmployeeId` (required), `ProjectId` (required), `Date` (`DateOnly`, required), `Start` und `End` (`TimeOnly`, required, wie eingegeben), `Note` (optional, max. 500 Zeichen), berechnet `ActualDuration` (`End - Start`, nicht gespeichert); keine öffentlichen Setter (Prinzip III). `BilledDuration` kommt erst in T023, nach ihren Tests (Prinzip II)
+- [X] T013 [P] Schnittstellen `ITimeEntryRepository` (nur `AddAsync` und `GetForEmployeeAndDateAsync`), `IEmployeeRepository`, `IProjectRepository` in `src/Kontor.Core/Abstractions/`
+- [X] T014 `KontorDbContext` und Entity-Konfigurationen mit den Constraints aus data-model.md, Index auf (`EmployeeId`, `Date`), Seed per `HasData` (Ilka Brandt, Tomás Okoye, Juna Sato, Rik Halvorsen; `NSL-ALB-01` „Antriebswartung Albatros“, `KBA-TG3-04` „Schildgenerator-Kalibrierung Tiefgrund III“, `HFL-PER-02` „Lebenserhaltung prüfen Perihel“) in `src/Kontor.Infrastructure/KontorDbContext.cs` und `src/Kontor.Infrastructure/Configurations/`
+- [X] T015 Repositories (nur Hinzufügen und Lesen, je Operation ein Kontext über `IDbContextFactory`) in `src/Kontor.Infrastructure/Repositories/` und Registrierung `AddKontorInfrastructure` in `src/Kontor.Infrastructure/DependencyInjection.cs` (research.md, R9)
+- [X] T016 `src/Kontor.Web/Program.cs`: Infrastruktur registrieren, Connection String `KontorDb` für LocalDB in `src/Kontor.Web/appsettings.Development.json`, ausstehende Migrationen in Development beim Start anwenden
+- [X] T017 Erste Migration `InitialCreate` mit dem lokalen Tool erzeugen (`dotnet tool restore`, `dotnet ef migrations add InitialCreate`) in `src/Kontor.Infrastructure/Migrations/`
+- [X] T018 Test-Double `InMemoryTimeEntryRepository` in `tests/Kontor.Core.Tests/Fakes/InMemoryTimeEntryRepository.cs`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
