@@ -119,6 +119,59 @@ public sealed class TimeEntryServiceTests
         Assert.IsTrue(result.Succeeded);
     }
 
+    private const int RikHalvorsen = 4;
+    private static readonly DateOnly November3 = new(2026, 11, 3);
+
+    // User Story 2, scenario 1
+    [TestMethod]
+    public async Task BookAsync_SevenHoursWithoutBreak_IsRejected()
+    {
+        var result = await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 7, 0, 14, 0));
+
+        Assert.IsFalse(result.Succeeded);
+        Assert.AreEqual(BreakRule.Name, result.ViolatedRule);
+    }
+
+    // User Story 2, scenario 2
+    [TestMethod]
+    public async Task BookAsync_WithThirtyMinuteBreak_IsSaved()
+    {
+        await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 7, 0, 11, 0));
+
+        var result = await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 11, 30, 14, 0));
+
+        Assert.IsTrue(result.Succeeded);
+    }
+
+    // User Story 2, scenario 3: only the new booking is rejected, existing ones stay
+    [TestMethod]
+    public async Task BookAsync_ExceedingTenHours_IsRejectedAndExistingEntriesStay()
+    {
+        await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 7, 0, 11, 0));
+        await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 11, 30, 14, 0));
+        await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 14, 45, 17, 15));
+
+        var result = await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 17, 30, 19, 0));
+
+        Assert.IsFalse(result.Succeeded);
+        Assert.AreEqual(MaxDailyHoursRule.Name, result.ViolatedRule);
+        Assert.HasCount(3, _repository.Entries);
+    }
+
+    // FR-013: the rules use the actual durations, the daily total the billed ones
+    [TestMethod]
+    public async Task BookAsync_TenActualHours_IsSavedAlthoughBilledTotalIsHigher()
+    {
+        await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 6, 0, 9, 23));
+        await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 10, 0, 13, 23));
+
+        var result = await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 14, 0, 17, 14));
+
+        Assert.IsTrue(result.Succeeded);
+        var day = await _service.GetDayAsync(RikHalvorsen, November3);
+        Assert.AreEqual(new TimeSpan(10, 15, 0), day.Total);
+    }
+
     internal static BookingRequest Request(int employeeId, int projectId, DateOnly date, int startHour, int startMinute, int endHour, int endMinute, string? note = null) =>
         new(employeeId, projectId, date, new TimeOnly(startHour, startMinute), new TimeOnly(endHour, endMinute), note);
 }

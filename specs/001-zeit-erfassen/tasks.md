@@ -98,9 +98,9 @@ description: "Task list for feature 001 Zeit erfassen"
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T030 [P] [US2] `BreakRuleTests` in `tests/Kontor.Core.Tests/Rules/BreakRuleTests.cs`: mehr als 6 h mit weniger als 30 min Pause abgelehnt, 07:00–11:00 und 11:30–14:00 erlaubt, Lücke unter 15 min zählt nicht, mehr als 9 h verlangt 45 min; tatsächliche Dauern (FR-008, FR-013)
-- [ ] T031 [P] [US2] `MaxDailyHoursRuleTests` in `tests/Kontor.Core.Tests/Rules/MaxDailyHoursRuleTests.cs`: mehr als 10 h abgelehnt, genau 10 h erlaubt; tatsächlich 10:00 h aus drei Buchungen (3:23, 3:23, 3:14) erlaubt, obwohl die Abrechnungsdauern 10:15 h ergeben (FR-009, FR-013)
-- [ ] T032 [US2] `TimeEntryServiceTests` (User Story 2) in `tests/Kontor.Core.Tests/Services/TimeEntryServiceTests.cs`: Akzeptanzszenarien 1–3 von User Story 2; abgelehnt wird nur die neue Buchung
+- [X] T030 [P] [US2] `BreakRuleTests` in `tests/Kontor.Core.Tests/Rules/BreakRuleTests.cs`: mehr als 6 h mit weniger als 30 min Pause abgelehnt, 07:00–11:00 und 11:30–14:00 erlaubt, Lücke unter 15 min zählt nicht, mehr als 9 h verlangt 45 min; tatsächliche Dauern (FR-008, FR-013)
+- [X] T031 [P] [US2] `MaxDailyHoursRuleTests` in `tests/Kontor.Core.Tests/Rules/MaxDailyHoursRuleTests.cs`: mehr als 10 h abgelehnt, genau 10 h erlaubt; tatsächlich 10:00 h aus drei Buchungen (3:23, 3:23, 3:14) erlaubt, obwohl die Abrechnungsdauern 10:15 h ergeben (FR-009, FR-013)
+- [X] T032 [US2] `TimeEntryServiceTests` (User Story 2) in `tests/Kontor.Core.Tests/Services/TimeEntryServiceTests.cs`: Akzeptanzszenarien 1–3 von User Story 2; abgelehnt wird nur die neue Buchung
 
 ### Implementation for User Story 2
 
