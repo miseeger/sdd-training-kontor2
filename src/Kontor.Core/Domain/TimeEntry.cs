@@ -1,3 +1,5 @@
+using Kontor.Core.Rules;
+
 namespace Kontor.Core.Domain;
 
 /// <summary>
@@ -39,5 +41,6 @@ public sealed class TimeEntry
     /// <summary>The actual duration as booked (FR-004); not stored.</summary>
     public TimeSpan ActualDuration => End - Start;
 
-    public TimeSpan BilledDuration => throw new NotImplementedException();
+    /// <summary>The billed duration, rounded up to the next full quarter hour (FR-005); not stored.</summary>
+    public TimeSpan BilledDuration => BillingRounding.Round(ActualDuration);
 }

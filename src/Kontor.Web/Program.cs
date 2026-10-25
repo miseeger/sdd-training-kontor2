@@ -1,3 +1,4 @@
+using Kontor.Core.Services;
 using Kontor.Infrastructure;
 using Kontor.Web.Components;
 
@@ -10,6 +11,7 @@ builder.Services.AddRazorComponents()
 var connectionString = builder.Configuration.GetConnectionString("KontorDb")
     ?? throw new InvalidOperationException("Connection string 'KontorDb' is missing.");
 builder.Services.AddKontorInfrastructure(connectionString);
+builder.Services.AddScoped<TimeEntryService>();
 
 var app = builder.Build();
 

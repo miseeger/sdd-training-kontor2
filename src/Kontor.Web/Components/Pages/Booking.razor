@@ -1,0 +1,175 @@
+@page "/"
+@using Kontor.Core.Abstractions
+@using Kontor.Core.Domain
+@using Kontor.Core.Services
+@inject TimeEntryService TimeEntryService
+@inject IEmployeeRepository EmployeeRepository
+@inject IProjectRepository ProjectRepository
+
+<PageTitle>Zeit erfassen</PageTitle>
+
+<h1>Zeit erfassen</h1>
+
+<div class="row g-3 mb-4" style="max-width: 48rem">
+    <div class="col-md-6">
+        <label class="form-label" for="employee">Mitarbeiter:in</label>
+        <select id="employee" class="form-select" value="@_employeeId" @onchange="OnEmployeeChangedAsync">
+            <option value="0">– bitte wählen –</option>
+            @foreach (var employee in _employees)
+            {
+                <option value="@employee.Id">@employee.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="date">Datum</label>
+        <input id="date" type="date" class="form-control" value="@_date.ToString("yyyy-MM-dd")" @onchange="OnDateChangedAsync" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="start">Beginn</label>
+        <input id="start" type="time" class="form-control" @bind="_start" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="end">Ende</label>
+        <input id="end" type="time" class="form-control" @bind="_end" />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="project">Projekt</label>
+        <select id="project" class="form-select" @bind="_projectId">
+            <option value="0">– bitte wählen –</option>
+            @foreach (var project in _projects)
+            {
+                <option value="@project.Id">@project.Key · @project.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-12">
+        <label class="form-label" for="note">Notiz (optional)</label>
+        <textarea id="note" class="form-control" maxlength="@TimeEntry.NoteMaxLength" rows="2" @bind="_note"></textarea>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" disabled="@(!CanSave)" @onclick="SaveAsync">Speichern</button>
+    </div>
+</div>
+
+@if (_message is not null)
+{
+    <div class="alert @(_succeeded ? "alert-success" : "alert-danger")" role="status">
+        @if (!_succeeded)
+        {
+            <strong>@_violatedRule:</strong> @_message
+        }
+        else
+        {
+            @_message
+        }
+    </div>
+}
+
+@if (_employeeId != 0)
+{
+    <h2 class="h4">Buchungen am @_date.ToString("dd.MM.yyyy")</h2>
+    @if (_day.Entries.Count == 0)
+    {
+        <p>Noch keine Buchungen an diesem Tag.</p>
+    }
+    else
+    {
+        <table class="table" style="max-width: 48rem">
+            <thead>
+                <tr><th>Beginn</th><th>Ende</th><th>Dauer</th><th>Abgerechnet</th><th>Projekt</th><th>Notiz</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in _day.Entries)
+                {
+                    <tr>
+                        <td>@entry.Start.ToString("HH:mm")</td>
+                        <td>@entry.End.ToString("HH:mm")</td>
+                        <td>@FormatDuration(entry.ActualDuration)</td>
+                        <td>@FormatDuration(entry.BilledDuration)</td>
+                        <td>@ProjectKey(entry.ProjectId)</td>
+                        <td>@entry.Note</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr><th colspan="3">Tagessumme (abgerechnet)</th><th>@FormatDuration(_day.Total)</th><th colspan="2"></th></tr>
+            </tfoot>
+        </table>
+    }
+}
+
+@code {
+    private IReadOnlyList<Employee> _employees = [];
+    private IReadOnlyList<Project> _projects = [];
+    private DayOverview _day = new([], TimeSpan.Zero);
+
+    private int _employeeId;
+    private int _projectId;
+    private DateOnly _date = DateOnly.FromDateTime(DateTime.Today);
+    private TimeOnly _start = new(8, 0);
+    private TimeOnly _end = new(12, 0);
+    private string? _note;
+
+    private bool _succeeded;
+    private string? _violatedRule;
+    private string? _message;
+
+    private bool CanSave => _employeeId != 0 && _projectId != 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _employees = await EmployeeRepository.GetAllAsync();
+        _projects = await ProjectRepository.GetAllAsync();
+    }
+
+    private async Task OnEmployeeChangedAsync(ChangeEventArgs e)
+    {
+        _employeeId = int.TryParse(e.Value?.ToString(), out var id) ? id : 0;
+        _message = null;
+        await LoadDayAsync();
+    }
+
+    private async Task OnDateChangedAsync(ChangeEventArgs e)
+    {
+        if (DateOnly.TryParse(e.Value?.ToString(), out var date))
+        {
+            _date = date;
+        }
+
+        _message = null;
+        await LoadDayAsync();
+    }
+
+    private async Task SaveAsync()
+    {
+        var note = string.IsNullOrWhiteSpace(_note) ? null : _note.Trim();
+        var result = await TimeEntryService.BookAsync(new BookingRequest(_employeeId, _projectId, _date, _start, _end, note));
+
+        _succeeded = result.Succeeded;
+        _violatedRule = result.ViolatedRule;
+        _message = result.Succeeded
+            ? $"Gespeichert: {result.Entry!.Start:HH\\:mm}–{result.Entry.End:HH\\:mm}, Dauer {FormatDuration(result.Entry.ActualDuration)}, abgerechnet {FormatDuration(result.Entry.BilledDuration)}."
+            : result.Message;
+
+        if (result.Succeeded)
+        {
+            _note = null;
+        }
+
+        await LoadDayAsync();
+    }
+
+    private async Task LoadDayAsync()
+    {
+        _day = _employeeId == 0
+            ? new DayOverview([], TimeSpan.Zero)
+            : await TimeEntryService.GetDayAsync(_employeeId, _date);
+    }
+
+    private string ProjectKey(int projectId) =>
+        _projects.FirstOrDefault(p => p.Id == projectId)?.Key ?? projectId.ToString();
+
+    private static string FormatDuration(TimeSpan duration) =>
+        $"{(int)duration.TotalHours}:{duration.Minutes:00}";
+}

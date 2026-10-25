@@ -78,13 +78,13 @@ description: "Task list for feature 001 Zeit erfassen"
 
 ### Implementation for User Story 1
 
-- [ ] T023 [US1] `BillingRounding` in `src/Kontor.Core/Rules/BillingRounding.cs` und `TimeEntry.BilledDuration` darüber berechnen in `src/Kontor.Core/Domain/TimeEntry.cs` (nicht gespeichert; macht T019 grün)
-- [ ] T024 [P] [US1] `TimeRangeRule` in `src/Kontor.Core/Rules/TimeRangeRule.cs` (macht T020 grün)
-- [ ] T025 [P] [US1] `OverlapRule` in `src/Kontor.Core/Rules/OverlapRule.cs` (macht T021 grün)
-- [ ] T026 [US1] `BookingRequest`, `BookingResult`, `DayOverview` und `TimeEntryService` in `src/Kontor.Core/Services/`: Notiz prüfen, `TimeRangeRule` und `OverlapRule`, speichern ohne Beginn und Ende zu verändern; Tagesliste und Tagessumme liefern (macht T022 grün; depends on T023–T025)
-- [ ] T027 [US1] `TimeEntryService` in `src/Kontor.Web/Program.cs` registrieren
-- [ ] T028 [US1] Seite `src/Kontor.Web/Components/Pages/Booking.razor` als Startseite: Person aus Liste wählen, Datum, Beginn, Ende, Projekt, Notiz (optional, max. 500 Zeichen), Speichern; Hinweis mit verletzter Regel bei Ablehnung; Tagesliste mit Beginn, Ende, tatsächlicher und abgerechneter Dauer je Buchung und Tagessumme; keine Bearbeiten- oder Löschen-Funktion (FR-001 bis FR-004, FR-010 bis FR-012)
-- [ ] T029 [US1] Navigation auf die Buchungsseite reduzieren, Beispielseiten der Vorlage (Counter, Weather) entfernen in `src/Kontor.Web/Components/`
+- [X] T023 [US1] `BillingRounding` in `src/Kontor.Core/Rules/BillingRounding.cs` und `TimeEntry.BilledDuration` darüber berechnen in `src/Kontor.Core/Domain/TimeEntry.cs` (nicht gespeichert; macht T019 grün)
+- [X] T024 [P] [US1] `TimeRangeRule` in `src/Kontor.Core/Rules/TimeRangeRule.cs` (macht T020 grün)
+- [X] T025 [P] [US1] `OverlapRule` in `src/Kontor.Core/Rules/OverlapRule.cs` (macht T021 grün)
+- [X] T026 [US1] `BookingRequest`, `BookingResult`, `DayOverview` und `TimeEntryService` in `src/Kontor.Core/Services/`: Notiz prüfen, `TimeRangeRule` und `OverlapRule`, speichern ohne Beginn und Ende zu verändern; Tagesliste und Tagessumme liefern (macht T022 grün; depends on T023–T025)
+- [X] T027 [US1] `TimeEntryService` in `src/Kontor.Web/Program.cs` registrieren
+- [X] T028 [US1] Seite `src/Kontor.Web/Components/Pages/Booking.razor` als Startseite: Person aus Liste wählen, Datum, Beginn, Ende, Projekt, Notiz (optional, max. 500 Zeichen), Speichern; Hinweis mit verletzter Regel bei Ablehnung; Tagesliste mit Beginn, Ende, tatsächlicher und abgerechneter Dauer je Buchung und Tagessumme; keine Bearbeiten- oder Löschen-Funktion (FR-001 bis FR-004, FR-010 bis FR-012)
+- [X] T029 [US1] Navigation auf die Buchungsseite reduzieren, Beispielseiten der Vorlage (Counter, Weather) entfernen in `src/Kontor.Web/Components/`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
