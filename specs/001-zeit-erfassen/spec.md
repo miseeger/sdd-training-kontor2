@@ -8,6 +8,14 @@
 
 **Input**: User description: "Kontor ist die neue Zeiterfassung der Galactic Service Company (GSC), eines Wartungsdienstleisters mit rund 40 Technikerinnen und Technikern. Heute führen alle ihre Stunden in Tabellen, und die Produktverantwortliche tippt am Monatsende alles ab. Als Technikerin möchte ich meine Arbeitszeit auf das Projekt buchen, an dem ich gearbeitet habe, damit am Monatsende niemand meine Stunden abtippen muss. Eine Buchung hat Datum, Beginn, Ende, Projekt und eine optionale Notiz. Nach dem Speichern sehe ich meine Buchungen des Tages und die Tagessumme. Fachliche Regeln: Abgerechnet wird die Dauer einer Buchung, aufgerundet auf die nächste volle Service-Viertelstunde (15 Minuten). Beginn und Ende werden nicht gerundet. Beispiel: 08:10 bis 10:17 dauert 2:07 Stunden und wird mit 2:15 Stunden abgerechnet. Die Tagesliste zeigt je Buchung die tatsächliche und die abgerechnete Dauer, die Tagessumme zählt die abgerechneten Dauern. Buchungen derselben Person dürfen sich zeitlich nicht überlappen. Es gilt eine Mindestpause nach gesetzlicher Vorgabe. Es gilt eine Tageshöchstarbeitszeit. Eine gespeicherte Buchung wird weder geändert noch gelöscht. Nicht Teil dieses Features: Wochenübersicht, Monatsabschluss und Korrektur von Buchungen. In dieser Phase gibt es keine Anmeldung; Mitarbeitende und Projekte sind fest hinterlegt."
 
+## Clarifications
+
+### Session 2026-10-25
+
+- Q: Welche Lücken zwischen zwei Buchungen desselben Tages zählen als Pause? → A: Nur Lücken von mindestens 15 Minuten.
+- Q: Rechnen Mindestpause und Tageshöchstarbeitszeit mit der tatsächlichen oder mit der abgerechneten Dauer? → A: Mit der tatsächlichen Dauer.
+- Q: Wie behandelt Kontor eine Buchung über Mitternacht? → A: Kontor lehnt sie ab; wer über Mitternacht arbeitet, bucht zwei Einträge, einen pro Tag.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Arbeitszeit auf ein Projekt buchen (Priority: P1)
@@ -84,7 +92,10 @@ Nennung der Regel abgelehnt wird.
   die tatsächliche Dauer ist 0:05, die abgerechnete Dauer 0:15.
 - Was passiert, wenn sich zwei Buchungen nur an einer Grenze berühren (Ende = Beginn)?
   → Das ist keine Überschneidung.
-- Was passiert bei einer Buchung über Mitternacht?
+- Was passiert bei einer Buchung über Mitternacht? → Sie wird abgelehnt; wer über
+  Mitternacht arbeitet, bucht zwei Einträge, einen pro Tag.
+- Was passiert, wenn zwischen zwei Buchungen nur 10 Minuten liegen? → Die Lücke zählt
+  nicht als Pause.
 
 ## Requirements *(mandatory)*
 
@@ -101,14 +112,18 @@ Nennung der Regel abgelehnt wird.
   Dauer, aufgerundet auf die nächste volle Service-Viertelstunde (15 Minuten). Eine Dauer,
   die bereits ein Vielfaches von 15 Minuten ist, bleibt unverändert.
 - **FR-006**: Das System MUSS eine Buchung ablehnen, deren Ende nicht nach dem Beginn liegt.
+  Beginn und Ende liegen am selben Tag; eine Buchung über Mitternacht wird abgelehnt.
 - **FR-007**: Das System MUSS eine Buchung ablehnen, die sich zeitlich mit einer bestehenden
   Buchung derselben Person überschneidet. Berühren sich zwei Buchungen nur (Ende = Beginn),
   ist das keine Überschneidung.
 - **FR-008**: Das System MUSS eine Buchung ablehnen, wenn die Tagesarbeitszeit der Person
   danach mehr als 6 Stunden beträgt und die Pause weniger als 30 Minuten, oder mehr als
-  9 Stunden und die Pause weniger als 45 Minuten.
+  9 Stunden und die Pause weniger als 45 Minuten. Als Pause zählen nur Lücken zwischen zwei
+  Buchungen desselben Tages von mindestens 15 Minuten.
 - **FR-009**: Das System MUSS eine Buchung ablehnen, wenn die Tagesarbeitszeit der Person
   danach mehr als 10 Stunden beträgt.
+- **FR-013**: Tagesarbeitszeit und Pausen für FR-008 und FR-009 MÜSSEN aus den tatsächlichen
+  Dauern berechnet werden, nicht aus den abgerechneten.
 - **FR-010**: Bei jeder Ablehnung MUSS das System die verletzte Regel benennen.
 - **FR-011**: Gespeicherte Buchungen DÜRFEN weder geändert noch gelöscht werden können.
 - **FR-012**: Nach dem Speichern MUSS das System alle Buchungen der Person für diesen Tag
@@ -141,7 +156,6 @@ Nennung der Regel abgelehnt wird.
 - Die gesetzlichen Vorgaben sind die des deutschen Arbeitszeitgesetzes: mehr als 6 Stunden
   Arbeit verlangen mindestens 30 Minuten Pause, mehr als 9 Stunden mindestens 45 Minuten;
   die Tageshöchstarbeitszeit beträgt 10 Stunden.
-- Als Pause gilt die Zeit zwischen zwei Buchungen desselben Tages.
 - Alle Mitarbeitenden arbeiten in derselben Ortszeit; Zeitzonen spielen keine Rolle.
 - Eine Notiz ist freier Text mit höchstens 500 Zeichen.
 - Mitarbeitende und Projekte werden in dieser Phase nicht über die Oberfläche gepflegt.
