@@ -104,9 +104,9 @@ description: "Task list for feature 001 Zeit erfassen"
 
 ### Implementation for User Story 2
 
-- [ ] T033 [P] [US2] `BreakRule` in `src/Kontor.Core/Rules/BreakRule.cs` (macht T030 grün)
-- [ ] T034 [P] [US2] `MaxDailyHoursRule` in `src/Kontor.Core/Rules/MaxDailyHoursRule.cs` (macht T031 grün)
-- [ ] T035 [US2] `BreakRule` und `MaxDailyHoursRule` nach der `OverlapRule` in `src/Kontor.Core/Services/TimeEntryService.cs` einbinden (macht T032 grün)
+- [X] T033 [P] [US2] `BreakRule` in `src/Kontor.Core/Rules/BreakRule.cs` (macht T030 grün)
+- [X] T034 [P] [US2] `MaxDailyHoursRule` in `src/Kontor.Core/Rules/MaxDailyHoursRule.cs` (macht T031 grün)
+- [X] T035 [US2] `BreakRule` und `MaxDailyHoursRule` nach der `OverlapRule` in `src/Kontor.Core/Services/TimeEntryService.cs` einbinden (macht T032 grün)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 

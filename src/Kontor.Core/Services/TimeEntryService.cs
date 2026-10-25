@@ -25,7 +25,9 @@ public sealed class TimeEntryService(ITimeEntryRepository repository)
             .ToList();
 
         var violation = TimeRangeRule.Check(candidate)
-            ?? OverlapRule.Check(candidate, existing);
+            ?? OverlapRule.Check(candidate, existing)
+            ?? BreakRule.Check(candidate, existing)
+            ?? MaxDailyHoursRule.Check(candidate, existing);
         if (violation is not null)
         {
             return BookingResult.Rejected(violation);
