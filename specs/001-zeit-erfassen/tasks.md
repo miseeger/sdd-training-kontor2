@@ -71,10 +71,10 @@ description: "Task list for feature 001 Zeit erfassen"
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T019 [P] [US1] `BillingRoundingTests` in `tests/Kontor.Core.Tests/Rules/BillingRoundingTests.cs`: 2:07 → 2:15, 2:00 bleibt 2:00, 0:05 → 0:15, 1:43 → 1:45, 0:01 → 0:15 (FR-005)
-- [ ] T020 [P] [US1] `TimeRangeRuleTests` in `tests/Kontor.Core.Tests/Rules/TimeRangeRuleTests.cs`: Ende vor oder gleich Beginn abgelehnt, über Mitternacht (22:00–00:30) abgelehnt, 08:05–08:10 erlaubt (FR-006)
-- [ ] T021 [P] [US1] `OverlapRuleTests` in `tests/Kontor.Core.Tests/Rules/OverlapRuleTests.cs`: 10:00–12:00 gegen 08:10–10:17 abgelehnt, Berührung 10:17–12:00 erlaubt, Buchungen anderer Personen zählen nicht (FR-007)
-- [ ] T022 [US1] `TimeEntryServiceTests` (User Story 1) in `tests/Kontor.Core.Tests/Services/TimeEntryServiceTests.cs`: Akzeptanzszenarien 1–4 von User Story 1; Tagessumme = Summe der Abrechnungsdauern (FR-012, SC-003); Notiz über 500 Zeichen abgelehnt; bei Ablehnung ist die verletzte Regel benannt (FR-010); nutzt T018
+- [X] T019 [P] [US1] `BillingRoundingTests` in `tests/Kontor.Core.Tests/Rules/BillingRoundingTests.cs`: 2:07 → 2:15, 2:00 bleibt 2:00, 0:05 → 0:15, 1:43 → 1:45, 0:01 → 0:15 (FR-005)
+- [X] T020 [P] [US1] `TimeRangeRuleTests` in `tests/Kontor.Core.Tests/Rules/TimeRangeRuleTests.cs`: Ende vor oder gleich Beginn abgelehnt, über Mitternacht (22:00–00:30) abgelehnt, 08:05–08:10 erlaubt (FR-006)
+- [X] T021 [P] [US1] `OverlapRuleTests` in `tests/Kontor.Core.Tests/Rules/OverlapRuleTests.cs`: 10:00–12:00 gegen 08:10–10:17 abgelehnt, Berührung 10:17–12:00 erlaubt, Buchungen anderer Personen zählen nicht (FR-007)
+- [X] T022 [US1] `TimeEntryServiceTests` (User Story 1) in `tests/Kontor.Core.Tests/Services/TimeEntryServiceTests.cs`: Akzeptanzszenarien 1–4 von User Story 1; Tagessumme = Summe der Abrechnungsdauern (FR-012, SC-003); Notiz über 500 Zeichen abgelehnt; bei Ablehnung ist die verletzte Regel benannt (FR-010); nutzt T018
 
 ### Implementation for User Story 1
 

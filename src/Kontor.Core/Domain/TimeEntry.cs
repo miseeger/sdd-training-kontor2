@@ -38,4 +38,6 @@ public sealed class TimeEntry
 
     /// <summary>The actual duration as booked (FR-004); not stored.</summary>
     public TimeSpan ActualDuration => End - Start;
+
+    public TimeSpan BilledDuration => throw new NotImplementedException();
 }
