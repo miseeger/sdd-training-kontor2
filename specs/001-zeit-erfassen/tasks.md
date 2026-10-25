@@ -116,8 +116,8 @@ description: "Task list for feature 001 Zeit erfassen"
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T036 [P] `README.md` im Wurzelverzeichnis: Zweck, Voraussetzungen, Verweis auf `specs/001-zeit-erfassen/quickstart.md`
-- [ ] T037 Prüfszenarien aus `specs/001-zeit-erfassen/quickstart.md` durchgehen
+- [X] T036 [P] `README.md` im Wurzelverzeichnis: Zweck, Voraussetzungen, Verweis auf `specs/001-zeit-erfassen/quickstart.md`
+- [X] T037 Prüfszenarien aus `specs/001-zeit-erfassen/quickstart.md` durchgehen
 
 ---
 
