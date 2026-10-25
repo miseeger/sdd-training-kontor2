@@ -29,15 +29,15 @@ description: "Task list for feature 001 Zeit erfassen"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 `global.json` mit fester .NET-10-SDK-Version anlegen
-- [ ] T002 `Kontor.slnx`, Ordner `src/` und `tests/` und `.gitignore` für .NET anlegen
-- [ ] T003 [P] `Directory.Build.props` anlegen: `net10.0`, `Nullable` enable, `ImplicitUsings` enable, `TreatWarningsAsErrors` true
-- [ ] T004 [P] `Directory.Packages.props` anlegen: `ManagePackageVersionsCentrally` und `CentralPackageTransitivePinningEnabled` true; `Microsoft.EntityFrameworkCore.SqlServer` 10.0.13, `Microsoft.EntityFrameworkCore.Design` 10.0.13, `MSTest` 4.5.1, `System.Security.Cryptography.Pkcs` 10.0.13; keine Platzhalterversionen (research.md, R8)
-- [ ] T005 [P] `nuget.config` mit `<clear />` und nur nuget.org; Tool-Manifest `.config/dotnet-tools.json` mit `dotnet-ef` 10.0.13
-- [ ] T006 Class Library `src/Kontor.Core/Kontor.Core.csproj` ohne Paket- und Projektreferenzen
-- [ ] T007 Class Library `src/Kontor.Infrastructure/Kontor.Infrastructure.csproj` mit Referenz auf `Kontor.Core` und den EF-Core-Paketen
-- [ ] T008 Blazor Web App `src/Kontor.Web/Kontor.Web.csproj` mit Render-Modus `InteractiveServer` global, Referenzen auf `Kontor.Core` und `Kontor.Infrastructure`
-- [ ] T009 Testprojekt `tests/Kontor.Core.Tests/Kontor.Core.Tests.csproj` mit `PackageReference` auf `MSTest` und Referenz auf `Kontor.Core`; alle Projekte in `Kontor.slnx` aufnehmen
+- [X] T001 `global.json` mit fester .NET-10-SDK-Version anlegen
+- [X] T002 `Kontor.slnx`, Ordner `src/` und `tests/` und `.gitignore` für .NET anlegen
+- [X] T003 [P] `Directory.Build.props` anlegen: `net10.0`, `Nullable` enable, `ImplicitUsings` enable, `TreatWarningsAsErrors` true
+- [X] T004 [P] `Directory.Packages.props` anlegen: `ManagePackageVersionsCentrally` und `CentralPackageTransitivePinningEnabled` true; `Microsoft.EntityFrameworkCore.SqlServer` 10.0.13, `Microsoft.EntityFrameworkCore.Design` 10.0.13, `MSTest` 4.5.1, `System.Security.Cryptography.Pkcs` 10.0.13; keine Platzhalterversionen (research.md, R8)
+- [X] T005 [P] `nuget.config` mit `<clear />` und nur nuget.org; Tool-Manifest `.config/dotnet-tools.json` mit `dotnet-ef` 10.0.13
+- [X] T006 Class Library `src/Kontor.Core/Kontor.Core.csproj` ohne Paket- und Projektreferenzen
+- [X] T007 Class Library `src/Kontor.Infrastructure/Kontor.Infrastructure.csproj` mit Referenz auf `Kontor.Core` und den EF-Core-Paketen
+- [X] T008 Blazor Web App `src/Kontor.Web/Kontor.Web.csproj` mit Render-Modus `InteractiveServer` global, Referenzen auf `Kontor.Core` und `Kontor.Infrastructure`
+- [X] T009 Testprojekt `tests/Kontor.Core.Tests/Kontor.Core.Tests.csproj` mit `PackageReference` auf `MSTest` und Referenz auf `Kontor.Core`; alle Projekte in `Kontor.slnx` aufnehmen
 
 ---
 
