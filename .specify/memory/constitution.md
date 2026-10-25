@@ -1,50 +1,66 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Kontor Constitution
+
+Kontor ist die Zeiterfassung der Galactic Service Company (GSC).
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Fachlogik in Kontor.Core
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Alle fachlichen Regeln MÜSSEN in `Kontor.Core` implementiert sein. Oberfläche und
+Datenbankzugriff DÜRFEN KEINE Fachlogik enthalten; sie nehmen Eingaben entgegen,
+speichern und zeigen an.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+*Begründung:* Regeln an genau einer Stelle lassen sich ohne Oberfläche und ohne
+Datenbank prüfen und ändern.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. Test-First für Fachlogik (NON-NEGOTIABLE)
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+Jede Regel in `Kontor.Core` MUSS zuerst MSTest-Tests bekommen, danach die
+Implementierung. Mock-Bibliotheken DÜRFEN NICHT verwendet werden; Test-Doubles werden
+selbst geschrieben.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+*Begründung:* Die Tests beschreiben die Regel, bevor es Code gibt, und bleiben ohne
+fremde Bibliotheken lesbar.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. Buchungen bleiben
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Eine gespeicherte Buchung DARF weder geändert noch gelöscht werden.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+*Begründung:* Jede erfasste Arbeitszeit bleibt nachvollziehbar; Korrekturen werden
+später ein eigenes Feature.
+
+### IV. Englische Bezeichner
+
+Namespaces, Typen, Methoden und Tests MÜSSEN englisch benannt sein, auch wenn der
+Fachbegriff deutsch ist.
+
+*Begründung:* Einheitlicher Teamstandard für den gesamten Code.
+
+### V. Feste Paketversionen
+
+NuGet-Pakete MÜSSEN mit fester Version zentral in `Directory.Packages.props` stehen.
+Platzhalter wie `10.*` DÜRFEN NICHT verwendet werden. Ausgenommen sind die SDK-Version
+in `global.json` und lokale .NET-Tools im Tool-Manifest `.config/dotnet-tools.json`.
+
+*Begründung:* Jeder Build verwendet dieselben Pakete, Aktualisierungen sind bewusste
+Änderungen an einer Stelle. SDK und lokale Tools haben ihre eigene Ablage.
+
+## Technische Rahmenbedingungen
+
+Diese Technik gilt für jedes Feature und muss im Plan nicht wiederholt werden:
+
+- Zielplattform: .NET 10
+- Oberfläche: Blazor Web App mit Render-Modus `InteractiveServer`
+- Persistenz: EF Core mit SQL Server (lokal LocalDB)
+- Tests: MSTest
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- Diese Constitution hat Vorrang vor anderen Konventionen im Repository.
+- Änderungen erfolgen über `/speckit-constitution`. Die Version folgt Semantic
+  Versioning: MAJOR für entfernte oder neu definierte Prinzipien, MINOR für neue
+  Prinzipien oder Abschnitte, PATCH für Klarstellungen.
+- Die Einhaltung wird im Constitution Check jedes Plans und durch `/speckit-analyze`
+  geprüft.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-10-25 | **Last Amended**: 2026-10-25
