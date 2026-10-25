@@ -49,7 +49,7 @@ description: "Task list for feature 001 Zeit erfassen"
 
 - [ ] T010 [P] Entität `Employee` in `src/Kontor.Core/Domain/Employee.cs`: `Id`, `Name` (required, max. 100 Zeichen)
 - [ ] T011 [P] Entität `Project` in `src/Kontor.Core/Domain/Project.cs`: `Id`, `Key` (required, max. 20 Zeichen, eindeutig), `Name` (required, max. 200 Zeichen)
-- [ ] T012 [P] Entität `TimeEntry` in `src/Kontor.Core/Domain/TimeEntry.cs`: `Id`, `EmployeeId` (required), `ProjectId` (required), `Date` (`DateOnly`, required), `Start` und `End` (`TimeOnly`, required, wie eingegeben), `Note` (optional, max. 500 Zeichen), berechnet `ActualDuration` und `BilledDuration` (nicht gespeichert); keine öffentlichen Setter (Prinzip III)
+- [ ] T012 [P] Entität `TimeEntry` in `src/Kontor.Core/Domain/TimeEntry.cs`: `Id`, `EmployeeId` (required), `ProjectId` (required), `Date` (`DateOnly`, required), `Start` und `End` (`TimeOnly`, required, wie eingegeben), `Note` (optional, max. 500 Zeichen), berechnet `ActualDuration` (`End - Start`, nicht gespeichert); keine öffentlichen Setter (Prinzip III). `BilledDuration` kommt erst in T023, nach ihren Tests (Prinzip II)
 - [ ] T013 [P] Schnittstellen `ITimeEntryRepository` (nur `AddAsync` und `GetForEmployeeAndDateAsync`), `IEmployeeRepository`, `IProjectRepository` in `src/Kontor.Core/Abstractions/`
 - [ ] T014 `KontorDbContext` und Entity-Konfigurationen mit den Constraints aus data-model.md, Index auf (`EmployeeId`, `Date`), Seed per `HasData` (Ilka Brandt, Tomás Okoye, Juna Sato, Rik Halvorsen; `NSL-ALB-01` „Antriebswartung Albatros“, `KBA-TG3-04` „Schildgenerator-Kalibrierung Tiefgrund III“, `HFL-PER-02` „Lebenserhaltung prüfen Perihel“) in `src/Kontor.Infrastructure/KontorDbContext.cs` und `src/Kontor.Infrastructure/Configurations/`
 - [ ] T015 Repositories (nur Hinzufügen und Lesen, je Operation ein Kontext über `IDbContextFactory`) in `src/Kontor.Infrastructure/Repositories/` und Registrierung `AddKontorInfrastructure` in `src/Kontor.Infrastructure/DependencyInjection.cs` (research.md, R9)
@@ -72,13 +72,13 @@ description: "Task list for feature 001 Zeit erfassen"
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
 - [ ] T019 [P] [US1] `BillingRoundingTests` in `tests/Kontor.Core.Tests/Rules/BillingRoundingTests.cs`: 2:07 → 2:15, 2:00 bleibt 2:00, 0:05 → 0:15, 1:43 → 1:45, 0:01 → 0:15 (FR-005)
-- [ ] T020 [P] [US1] `TimeRangeRuleTests` in `tests/Kontor.Core.Tests/Rules/TimeRangeRuleTests.cs`: Ende vor oder gleich Beginn abgelehnt, 08:05–08:10 erlaubt (FR-006)
+- [ ] T020 [P] [US1] `TimeRangeRuleTests` in `tests/Kontor.Core.Tests/Rules/TimeRangeRuleTests.cs`: Ende vor oder gleich Beginn abgelehnt, über Mitternacht (22:00–00:30) abgelehnt, 08:05–08:10 erlaubt (FR-006)
 - [ ] T021 [P] [US1] `OverlapRuleTests` in `tests/Kontor.Core.Tests/Rules/OverlapRuleTests.cs`: 10:00–12:00 gegen 08:10–10:17 abgelehnt, Berührung 10:17–12:00 erlaubt, Buchungen anderer Personen zählen nicht (FR-007)
 - [ ] T022 [US1] `TimeEntryServiceTests` (User Story 1) in `tests/Kontor.Core.Tests/Services/TimeEntryServiceTests.cs`: Akzeptanzszenarien 1–4 von User Story 1; Tagessumme = Summe der Abrechnungsdauern (FR-012, SC-003); Notiz über 500 Zeichen abgelehnt; bei Ablehnung ist die verletzte Regel benannt (FR-010); nutzt T018
 
 ### Implementation for User Story 1
 
-- [ ] T023 [P] [US1] `BillingRounding` in `src/Kontor.Core/Rules/BillingRounding.cs` (macht T019 grün)
+- [ ] T023 [US1] `BillingRounding` in `src/Kontor.Core/Rules/BillingRounding.cs` und `TimeEntry.BilledDuration` darüber berechnen in `src/Kontor.Core/Domain/TimeEntry.cs` (nicht gespeichert; macht T019 grün)
 - [ ] T024 [P] [US1] `TimeRangeRule` in `src/Kontor.Core/Rules/TimeRangeRule.cs` (macht T020 grün)
 - [ ] T025 [P] [US1] `OverlapRule` in `src/Kontor.Core/Rules/OverlapRule.cs` (macht T021 grün)
 - [ ] T026 [US1] `BookingRequest`, `BookingResult`, `DayOverview` und `TimeEntryService` in `src/Kontor.Core/Services/`: Notiz prüfen, `TimeRangeRule` und `OverlapRule`, speichern ohne Beginn und Ende zu verändern; Tagesliste und Tagessumme liefern (macht T022 grün; depends on T023–T025)
@@ -140,7 +140,7 @@ description: "Task list for feature 001 Zeit erfassen"
 
 - Setup: T003, T004, T005
 - Foundational: T010, T011, T012, T013
-- User Story 1: Tests T019, T020, T021; danach Regeln T023, T024, T025
+- User Story 1: Tests T019, T020, T021; danach Regeln T024, T025 parallel zu T023
 - User Story 2: Tests T030, T031; danach Regeln T033, T034
 
 ---
