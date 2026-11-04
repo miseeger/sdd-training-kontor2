@@ -10,7 +10,7 @@ public static class BillingRounding
 
     public static TimeSpan Round(TimeSpan actualDuration)
     {
-        var quarters = (actualDuration.Ticks + QuarterHour.Ticks - 1) / QuarterHour.Ticks;
+        var quarters = actualDuration.Ticks / QuarterHour.Ticks;
         return TimeSpan.FromTicks(quarters * QuarterHour.Ticks);
     }
 }
