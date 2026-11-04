@@ -78,8 +78,8 @@ Nennung der Regel abgelehnt wird.
    11:30–14:00 bucht, **Then** wird die Buchung gespeichert (6:30 Stunden Arbeitszeit,
    30 Minuten Pause).
 3. **Given** Rik Halvorsen hat am 2026-11-03 Buchungen über insgesamt 9:00 Stunden mit
-   ausreichender Pause, **When** er eine weitere Buchung über 1:30 Stunden anlegt,
-   **Then** wird sie abgelehnt, weil die Tageshöchstarbeitszeit von 10 Stunden
+   ausreichender Pause, **When** er eine weitere Buchung über 2:30 Stunden anlegt,
+   **Then** wird sie abgelehnt, weil die Tageshöchstarbeitszeit von 11 Stunden
    überschritten würde.
 
 ---
@@ -121,7 +121,7 @@ Nennung der Regel abgelehnt wird.
   9 Stunden und die Pause weniger als 45 Minuten. Als Pause zählen nur Lücken zwischen zwei
   Buchungen desselben Tages von mindestens 15 Minuten.
 - **FR-009**: Das System MUSS eine Buchung ablehnen, wenn die Tagesarbeitszeit der Person
-  danach mehr als 10 Stunden beträgt.
+  danach mehr als 11 Stunden beträgt.
 - **FR-013**: Tagesarbeitszeit und Pausen für FR-008 und FR-009 MÜSSEN aus den tatsächlichen
   Dauern berechnet werden, nicht aus den abgerechneten.
 - **FR-010**: Bei jeder Ablehnung MUSS das System die verletzte Regel benennen.
@@ -155,7 +155,7 @@ Nennung der Regel abgelehnt wird.
 
 - Die gesetzlichen Vorgaben sind die des deutschen Arbeitszeitgesetzes: mehr als 6 Stunden
   Arbeit verlangen mindestens 30 Minuten Pause, mehr als 9 Stunden mindestens 45 Minuten;
-  die Tageshöchstarbeitszeit beträgt 10 Stunden.
+  die Tageshöchstarbeitszeit beträgt 11 Stunden.
 - Alle Mitarbeitenden arbeiten in derselben Ortszeit; Zeitzonen spielen keine Rolle.
 - Eine Notiz ist freier Text mit höchstens 500 Zeichen.
 - Mitarbeitende und Projekte werden in dieser Phase nicht über die Oberfläche gepflegt.
