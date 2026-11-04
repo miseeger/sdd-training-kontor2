@@ -1,0 +1,69 @@
+# Kontor · CI-Pipeline für Azure DevOps (Azure Pipelines)
+#
+# Diese Pipeline prüft nur, was eine Maschine eindeutig entscheiden kann:
+# Spec-Hygiene, Build, Tests und das Build-Artefakt. Ob die Spec stimmt und ob der Code
+# zur Spec passt, prüfen Menschen im Pull Request (siehe .azuredevops/pull_request_template.md).
+#
+# Für Pull Requests gibt es in Azure Repos Git keinen YAML-Trigger. Dort startet die
+# Branch-Policy "Build validation" diese Pipeline (Einrichtung: Trainer-Leitfaden S06).
+
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: Release
+
+steps:
+  # 1. Spec-Hygiene zuerst: schnell, und die Meldung nennt Datei und Zeile
+  - pwsh: ./tools/check-spec.ps1
+    displayName: Spec-Prüfung (drei Regeln)
+
+  # 2. SDK-Version kommt aus der global.json, es gibt keine zweite Stelle dafür
+  - task: UseDotNet@2
+    displayName: .NET SDK aus global.json
+    inputs:
+      packageType: sdk
+      useGlobalJson: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: 'src/Kontor.Web/Kontor.Web.csproj'
+      feedsToUse: select
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: build
+      projects: 'src/Kontor.Web/Kontor.Web.csproj'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  # Die Testergebnisse veröffentlicht der Task automatisch (Reiter "Tests" im Lauf)
+  - task: DotNetCoreCLI@2
+    displayName: Tests
+    inputs:
+      command: test
+      projects: 'tests/Kontor.Core.Tests/Kontor.Core.Tests.csproj'
+      arguments: '--configuration $(buildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: 'src/Kontor.Web/Kontor.Web.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/kontor-web'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: PublishPipelineArtifact@1
+    displayName: Artefakt kontor-web
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/kontor-web'
+      artifact: kontor-web
