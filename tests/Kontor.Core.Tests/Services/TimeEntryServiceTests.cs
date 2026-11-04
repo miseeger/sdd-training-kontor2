@@ -151,7 +151,7 @@ public sealed class TimeEntryServiceTests
         await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 11, 30, 14, 0));
         await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 14, 45, 17, 15));
 
-        var result = await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 17, 30, 19, 0));
+        var result = await _service.BookAsync(Request(RikHalvorsen, HflPer02, November3, 17, 30, 20, 0));
 
         Assert.IsFalse(result.Succeeded);
         Assert.AreEqual(MaxDailyHoursRule.Name, result.ViolatedRule);

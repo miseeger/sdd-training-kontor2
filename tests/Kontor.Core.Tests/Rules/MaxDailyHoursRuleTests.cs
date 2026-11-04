@@ -10,7 +10,7 @@ public sealed class MaxDailyHoursRuleTests
     [TestMethod]
     public void Check_MoreThanTenHours_ReturnsViolation()
     {
-        var violation = MaxDailyHoursRule.Check(Slot(13, 19), [Slot(7, 12)]);
+        var violation = MaxDailyHoursRule.Check(Slot(13, 20), [Slot(7, 12)]);
 
         Assert.IsNotNull(violation);
         Assert.AreEqual(MaxDailyHoursRule.Name, violation.Rule);
